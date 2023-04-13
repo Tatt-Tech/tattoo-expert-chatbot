@@ -1,7 +1,7 @@
 import openai
 
 def answer_question(question):
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
