@@ -1,7 +1,8 @@
 import openai
+import os
 
 def answer_question(question):
-    openai.api_key = "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"
+    openai.api_key = os.environ["openai_api_key"]
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
