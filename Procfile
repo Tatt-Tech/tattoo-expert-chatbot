@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn tattoo_expert_bot:tattoo_expert_bot
