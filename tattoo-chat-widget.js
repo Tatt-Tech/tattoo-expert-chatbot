@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Personal Tattoo Expert</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
+function injectChatWidget() {
+    // Inject CSS
+    var css = `
         .chat-widget {
             position: fixed;
             bottom: 20px;
@@ -131,7 +125,22 @@
           padding-left: 50px;
           margin-bottom: 15px;
         }        
-    </style>
+    `;
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
+  
+    // Inject HTML
+    var html = `
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Personal Tattoo Expert</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -164,8 +173,20 @@
     </div>    
   </div>
 </div>
-<script>
-  function typeWriter(elementId, text, speed) {
+</body>
+</html>
+
+    `;
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    document.body.appendChild(div);
+  }
+  
+  injectChatWidget();
+  
+
+
+function typeWriter(elementId, text, speed) {
     var i = 0;
 
     function typingAnimation() {
@@ -233,6 +254,3 @@ $(document).ready(function () {
       $("#initial-message").show(); // Show the initial message
   });
 });
-</script>
-</body>
-</html>

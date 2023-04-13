@@ -202,7 +202,7 @@ $(document).ready(function () {
       $(".chat-messages").append('<span class="loading-dots">...</span>');
 
       $.ajax({
-          url: "/api/chat",
+          url: "https://tattoo-expert.herokuapp.com/",
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({ "message": message }),
