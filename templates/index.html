@@ -180,59 +180,58 @@
 }
 
 $(document).ready(function () {
-    typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nAnything I can help with? 😊", 50);
+  typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nAnything I can help with? 😊", 50);
 
-    $(".tattoo-icon").click(function () {
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });
+  $(".tattoo-icon").click(function () {
+      $(".chat-widget").toggle();
+      $(".tattoo-icon").toggle();
+  });
 
-    $(".chat-content").click(function () {
-        event.stopPropagation();
-    });
+  $(".chat-content").click(function () {
+      event.stopPropagation();
+  });
 
-    $("#send").click(function () {
-        var message = $("#message").val();
-        if (message.trim() === "") {
-            return;
-        }
-        $("#initial-message").hide(); // Hide the initial message
-        $("#chatbot-answer").empty(); // Clear the previous response
+  $("#send").click(function () {
+      var message = $("#message").val();
+      if (message.trim() === "") {
+          return;
+      }
+      $("#initial-message").hide(); // Hide the initial message
+      
+      // Add loading animation
+      $(".chat-messages").append('<span class="loading-dots">...</span>');
 
-        // Add loading animation
-        $("#chatbot-answer").append('<span class="loading-dots">...</span>');
+      $.ajax({
+          url: "/api/chat",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ "message": message }),
+          success: function (data) {
+              $(".loading-dots").remove(); // Remove loading animation
 
-        $.ajax({
-            url: "/api/chat",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ "message": message }),
-            success: function (data) {
-                $(".loading-dots").remove(); // Remove loading animation
+              var responseHtml = '<div class="chatbot-message">' +
+                                     '<div class="avatar-icon">' +
+                                         '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                     '</div>' +
+                                     '<div id="response-text"></div>' +
+                                 '</div>';
 
-                var responseHtml = '<div class="chatbot-message">' +
-                                       '<div class="avatar-icon">' +
-                                           '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                                       '</div>' +
-                                       '<div id="response-text"></div>' +
-                                   '</div>';
+              $(".chat-messages").append(responseHtml); // Show the response container next to the avatar-icon
 
-                $("#chatbot-answer").html(responseHtml); // Show the response container next to the avatar-icon
+              // Call the typeWriter function with the response text
+              typeWriter("response-text", data.answer, 50);
 
-                // Call the typeWriter function with the response text
-                typeWriter("response-text", data.answer, 50);
+              // Clear the question input and set the focus back to it
+              $("#message").val("").focus();
+          }
+      });
+  });
 
-                // Clear the question input and set the focus back to it
-                $("#message").val("").focus();
-            }
-        });
-    });
-
-    $("#clear").click(function () {
-        $("#chatbot-answer").html("");
-        $("#message").val("");
-        $("#initial-message").show(); // Show the initial message
-    });
+  $("#clear").click(function () {
+      $(".chat-messages").html("");
+      $("#message").val("");
+      $("#initial-message").show(); // Show the initial message
+  });
 });
 </script>
 </body>
