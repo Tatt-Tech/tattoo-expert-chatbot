@@ -156,22 +156,22 @@
 }
  </style>
  <div id="phone_number" style="display: none;">
-  +1 (555) 123-4567
+  +1 (208) 732-2671
  </div>
  <div id="address" style="display: none;">
-  123 Main St, Anytown, USA
+  Twin Falls, ID USA
  </div>
  <div id="name" style="display: none;">
-  Awesome Tattoo Studio
+  Tatt Tech
  </div>
  <div id="hours" style="display: none;">
-  Mon-Fri: 10am - 7pm, Sat: 11am - 6pm, Sun: Closed
+  Mon-Fri: 9am - 5pm | Sat-Sun: Closed
  </div>
  <div id="email" style="display: none;">
-  johndoe@tatt-tech.com
+  info@tatt-tech.com
  </div>
- </head>
- <body>
+</head>
+<body>
  <div class="tattoo-icon">
   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
  </div>
@@ -231,7 +231,6 @@
         }
         typingAnimation();
     }
-    
     $(".tattoo-icon").click(function () {
         if ($("#initial-message-text").text() === "") {
             typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
@@ -239,19 +238,16 @@
         $(".chat-widget").toggle();
         $(".tattoo-icon").toggle();
     });
-
     $("#close-button").click(function () {
         $(".chat-widget").toggle();
         $(".tattoo-icon").toggle();
     });
-
     $(document).click(function (event) {
         if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
             $(".chat-widget").hide();
             $(".tattoo-icon").show();
         }
     });
-
     $(".chat-content").click(function () {
         event.stopPropagation();
     });
@@ -318,6 +314,6 @@ var address = document.getElementById("address").innerHTML;
 var name = document.getElementById("name").innerHTML;
 var hours = document.getElementById("hours").innerHTML;
 var email = document.getElementById("email").innerHTML;
- </script>
+</script>
 </body>
 </html>
