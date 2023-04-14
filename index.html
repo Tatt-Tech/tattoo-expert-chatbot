@@ -31,7 +31,7 @@
       }
       #initial-message {
     background-color: white;
-    padding: 10px 15px;
+    padding: 20px 25px;
     border-radius: 50px;
     display: inline-block;
 }
@@ -48,6 +48,7 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
         .avatar-icon {
           width: 50px;
@@ -149,11 +150,17 @@
 }
 .response-container {
     background-color: white;
-    padding: 10px 15px;
+    padding: 20px 25px;
     border-radius: 50px;
     margin-bottom: 15px;
 }
  </style>
+ <div id="phone_number" style="display: none;">+1 (555) 123-4567</div>
+ <div id="address" style="display: none;">123 Main St, Anytown, USA</div>
+ <div id="name" style="display: none;">Awesome Tattoo Studio</div>
+ <div id="hours" style="display: none;">Mon-Fri: 10am - 7pm, Sat: 11am - 6pm, Sun: Closed</div>
+ </head>
+ <body>
  <div class="tattoo-icon">
   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
  </div>
@@ -213,8 +220,10 @@
         }
         typingAnimation();
     }
-    typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
     $(".tattoo-icon").click(function () {
+      if ($("#initial-message-text").text() === "") {
+        typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+      }
         $(".chat-widget").toggle();
         $(".tattoo-icon").toggle();
     });
@@ -274,7 +283,6 @@
     $("#clear").click(function () {
     $(".chat-messages").html(""); // Clear all chat messages
     $("#message").val(""); // Clear the input field
-
     // Create a new message element with the specified text
     var responseId = "response-" + Date.now();
     var responseHtml = '<div class="chatbot-message">' +
@@ -284,11 +292,14 @@
                            '<div class="response-container" id="' + responseId + '">' +
                            '</div>' +
                        '</div>';
-
     $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
     typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
 });
 });
+var phoneNumber = document.getElementById("phone_number").innerHTML;
+var address = document.getElementById("address").innerHTML;
+var name = document.getElementById("name").innerHTML;
+var hours = document.getElementById("hours").innerHTML;
  </script>
 </body>
 </html>
