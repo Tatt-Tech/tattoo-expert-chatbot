@@ -1,130 +1,130 @@
 function injectChatWidget() {
     // Inject CSS
     var css = `
-        .chat-widget {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            display: none;
-            border-radius: 20px;
-        }
-        .chat-content {
-          background-color: #f1f1f1;
-          padding: 25px;
-          border-radius: 20px;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-      }
-        .tattoo-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #38afdd;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            cursor: pointer;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .avatar-icon {
-          width: 50px;
-          height: 50px;
-          background-color: white;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-right: 15px;
-          flex-shrink: 0;
-          position: absolute; 
-          top: 10px; 
-          left: 10px; 
-      }  
+    .chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        display: none;
+        border-radius: 20px;
+    }
+    .chat-content {
+      background-color: #f1f1f1;
+      padding: 25px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+  }
+    .tattoo-icon {
+        width: 50px;
+        height: 50px;
+        background-color: #38afdd;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        cursor: pointer;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .avatar-icon {
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      flex-shrink: 0;
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+  }  
 
-      .avatar-icon img {
-          width: 24px;
-          height: 24px; 
-      }
-      
-        .buttons-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            margin-top: 15px;
-        }
-        .chat-widget .chatbot-message {
-          display: flex;
-          align-items: center;
-        }
-        
-        .chat-widget .chatbot-message img {
-          height: 30px;
-        }
-        .chat-widget .chatbot-message {
-          display: flex;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-        
-        .chat-widget .chatbot-message img {
-          height: 30px;
-        }
+  .avatar-icon img {
+      width: 24px;
+      height: 24px; 
+  }
+  
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+    .chat-widget .chatbot-message {
+      display: flex;
+      align-items: center;
+    }
+    
+    .chat-widget .chatbot-message img {
+      height: 30px;
+    }
+    .chat-widget .chatbot-message {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .chat-widget .chatbot-message img {
+      height: 30px;
+    }
 
-        .loading-dots {
-          display: inline-block;
-          width: 20px;
-          font-size: 14px;
-          line-height: 1;
-          animation: loadingDots 1s infinite;
-        }
-        
-        @keyframes loadingDots {
-          0%, 20% {
-            color: rgba(0,0,0,0);
-            text-shadow:
-              .25em 0 0 rgba(0,0,0,0),
-              .5em 0 0 rgba(0,0,0,0);}
-          40% {
-            color: black;
-            text-shadow:
-              .25em 0 0 rgba(0,0,0,0),
-              .5em 0 0 rgba(0,0,0,0);}
-          60% {
-            text-shadow:
-              .25em 0 0 black,
-              .5em 0 0 rgba(0,0,0,0);}
-          80%, 100% {
-            text-shadow:
-              .25em 0 0 black,
-              .5em 0 0 black;}
-        }
-         .link {
-          text-align: center; 
-          margin-top: 15px;
-          font-size: 12px;
-         } 
+    .loading-dots {
+      display: inline-block;
+      width: 20px;
+      font-size: 14px;
+      line-height: 1;
+      animation: loadingDots 1s infinite;
+    }
+    
+    @keyframes loadingDots {
+      0%, 20% {
+        color: rgba(0,0,0,0);
+        text-shadow:
+          .25em 0 0 rgba(0,0,0,0),
+          .5em 0 0 rgba(0,0,0,0);}
+      40% {
+        color: black;
+        text-shadow:
+          .25em 0 0 rgba(0,0,0,0),
+          .5em 0 0 rgba(0,0,0,0);}
+      60% {
+        text-shadow:
+          .25em 0 0 black,
+          .5em 0 0 rgba(0,0,0,0);}
+      80%, 100% {
+        text-shadow:
+          .25em 0 0 black,
+          .5em 0 0 black;}
+    }
+     .link {
+      text-align: center; 
+      margin-top: 15px;
+      font-size: 12px;
+     } 
 
-         .logo {
-          width: 75px;
-        }
+     .logo {
+      width: 75px;
+    }
 
-        .open_logo {
-          width: 75px;
-          margin-left: 5px;
-        }
+    .open_logo {
+      width: 75px;
+      margin-left: 5px;
+    }
 
-        .chat-messages {
-          max-height: 300px;
-          overflow-y: auto;
-          padding-right: 10px;
-          padding-left: 50px;
-          margin-bottom: 15px;
-        }        
+    .chat-messages {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
+      padding-left: 50px;
+      margin-bottom: 15px;
+    }       
     `;
     var style = document.createElement('style');
     style.type = 'text/css';
@@ -133,7 +133,7 @@ function injectChatWidget() {
   
     // Inject HTML
     var html = `
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
