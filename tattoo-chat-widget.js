@@ -231,16 +231,23 @@ $(document).ready(function () {
               $(".loading-dots").remove(); // Remove loading animation
 
               var responseHtml = '<div class="chatbot-message">' +
-                                     '<div class="avatar-icon">' +
-                                         '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                                     '</div>' +
-                                     '<div id="response-text"></div>' +
-                                 '</div>';
+                     '<div class="avatar-icon">' +
+                         '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                     '</div>' +
+                     '<div class="response-text"></div>' +
+                 '</div>';
 
-              $(".chat-messages").append(responseHtml); // Show the response container next to the avatar-icon
+                $(".chat-messages").append(responseHtml); // Show the response container next to the avatar-icon
+
+              // Get the last '.response-text' element
+              var responseTextElement = $(".response-text").last();
 
               // Call the typeWriter function with the response text
-              typeWriter("response-text", data.answer, 50);
+              typeWriter(responseTextElement.attr("id"), data.answer, 50);
+
+
+              // Call the typeWriter function with the response text
+              typeWriter("chatbot-answer", data.answer, 50);
 
               // Clear the question input and set the focus back to it
               $("#message").val("").focus();
