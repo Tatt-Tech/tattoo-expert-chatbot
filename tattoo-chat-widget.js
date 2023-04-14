@@ -186,7 +186,7 @@ function injectChatWidget() {
   
 
 
-function typeWriter(elementId, text, speed) {
+  function typeWriter(elementId, text, speed) {
     var i = 0;
 
     function typingAnimation() {
@@ -223,7 +223,7 @@ $(document).ready(function () {
       $(".chat-messages").append('<span class="loading-dots">...</span>');
 
       $.ajax({
-          url: "https://tattoo-expert.herokuapp.com/",
+          url: "https://tattoo-expert.herokuapp.com/api/chat",
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({ "message": message }),
