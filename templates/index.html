@@ -197,12 +197,12 @@ $(document).ready(function () {
           return;
       }
       $("#initial-message").hide(); // Hide the initial message
-      
+
       // Add loading animation
       $(".chat-messages").append('<span class="loading-dots">...</span>');
 
       $.ajax({
-          url: "https://tattoo-expert.herokuapp.com/",
+          url: "https://tattoo-expert.herokuapp.com/api/chat",
           type: "POST",
           contentType: "application/json",
           data: JSON.stringify({ "message": message }),

@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS  # Add this import
+from flask_cors import CORS  
 from tattoo_expert_bot import answer_question
 
 app = Flask(__name__)
-CORS(app)  # Add this line to enable CORS
+CORS(app)  
 
 @app.route("/", methods=["GET"])
 def index():
