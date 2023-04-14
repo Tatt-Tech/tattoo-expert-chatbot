@@ -159,7 +159,8 @@
  <div id="address" style="display: none;">123 Main St, Anytown, USA</div>
  <div id="name" style="display: none;">Awesome Tattoo Studio</div>
  <div id="hours" style="display: none;">Mon-Fri: 10am - 7pm, Sat: 11am - 6pm, Sun: Closed</div>
- </head>
+ <div id="email" style="display: none;">johndoe@tatt-tech.com</div>
+</head>
  <body>
  <div class="tattoo-icon">
   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
@@ -184,7 +185,7 @@
     <div id="chatbot-answer">
     </div>
    </div>
-   <textarea id="message" class="form-control" rows="1" style="resize: none; margin-top: 25px;" placeholder="Ask a question...">   </textarea>
+   <textarea id="message" class="form-control" rows="1" style="resize: none; height: auto; margin-top: 25px;" placeholder="Ask a question...">   </textarea>
    <div class="buttons-container">
     <button id="send" class="btn btn-primary mt-2" style="background-color: #38afdd; border: none;">
      Send
@@ -209,97 +210,101 @@
  </div>
  <script>
   $(document).ready(function () {
-    function typeWriter(elementId, text, speed) {
-        var i = 0;
-        function typingAnimation() {
-            if (i < text.length) {
-                document.getElementById(elementId).innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typingAnimation, speed);
-            }
-        }
-        typingAnimation();
-    }
-    $(".tattoo-icon").click(function () {
-      if ($("#initial-message-text").text() === "") {
-        typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+      function typeWriter(elementId, text, speed) {
+          var i = 0;
+          function typingAnimation() {
+              if (i < text.length) {
+                  document.getElementById(elementId).innerHTML += text.charAt(i);
+                  i++;
+                  setTimeout(typingAnimation, speed);
+              }
+          }
+          typingAnimation();
       }
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
+  
+      $(".tattoo-icon").click(function () {
+          if ($("#initial-message-text").text() === "") {
+              typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+          }
+          $(".chat-widget").toggle();
+          $(".tattoo-icon").toggle();
+      });
+  
+      $("#close-button").click(function () {
+          $(".chat-widget").toggle();
+          $(".tattoo-icon").toggle();
+      });
+  
+      $(document).click(function (event) {
+          if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
+              $(".chat-widget").hide();
+              $(".tattoo-icon").show();
+          }
+      });
+  
+      $(".chat-content").click(function () {
+          event.stopPropagation();
+      });
+  
+      $("#send").click(function () {
+          var message = $("#message").val();
+          if (message.trim() === "") {
+              return;
+          }
+          $("#initial-message").hide();
+          var loadingId = "loading-" + Date.now();
+          var loadingHtml = '<div class="chatbot-message">' +
+                                '<div class="avatar-icon">' +
+                                    '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                '</div>' +
+                                '<div class="response-container" id="' + loadingId + '">' +
+                                    '<span class="loading-dots">...</span>' +
+                                '</div>' +
+                            '</div>';
+          $(".chat-messages").prepend(loadingHtml);
+          $.ajax({
+              url: "https://tattoo-expert.herokuapp.com/api/chat",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ "message": message }),
+              success: function (data) {
+                  $("#" + loadingId).remove();
+                  var responseId = "response-" + Date.now();
+                  var responseHtml = '<div class="chatbot-message">' +
+                                         '<div class="avatar-icon">' +
+                                             '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                         '</div>' +
+                                         '<div class="response-container" id="' + responseId + '">' +
+                                         '</div>' +
+                                     '</div>';
+                  $(".chat-messages").prepend(responseHtml);
+                  typeWriter(responseId, data.answer, 50);
+                  $("#message").val("").focus();
+              }
+          });
+      });
+  
+      $("#clear").click(function () {
+        $(".chat-messages").html("");
+        $("#message").val("");
+        var responseId = "response-" + Date.now();
+        var responseHtml = '<div class="chatbot-message">' +
+                               '<div class="avatar-icon">' +
+                                   '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                               '</div>' +
+                               '<div class="response-container" id="' + responseId + '">' +
+                               '</div>' +
+                           '</div>';
+        $(".chat-messages").prepend(responseHtml);
+        typeWriter(responseId, "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
     });
-    $("#close-button").click(function () {
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });
-    $(document).click(function (event) {
-        if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
-            $(".chat-widget").hide();
-            $(".tattoo-icon").show();
-        }
-    });
-    $(".chat-content").click(function () {
-        event.stopPropagation();
-    });
-    $("#send").click(function () {
-        var message = $("#message").val();
-        if (message.trim() === "") {
-            return;
-        }
-        $("#initial-message").hide(); // Hide the initial message
-        // Add loading animation
-        var loadingId = "loading-" + Date.now();
-        var loadingHtml = '<div class="chatbot-message">' +
-                              '<div class="avatar-icon">' +
-                                  '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                              '</div>' +
-                              '<div class="response-container" id="' + loadingId + '">' +
-                                  '<span class="loading-dots">...</span>' +
-                              '</div>' +
-                          '</div>';
-        $(".chat-messages").prepend(loadingHtml);
-        $.ajax({
-            url: "https://tattoo-expert.herokuapp.com/api/chat",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ "message": message }),
-            success: function (data) {
-                $("#" + loadingId).remove(); // Remove loading animation
-                var responseId = "response-" + Date.now();
-                var responseHtml = '<div class="chatbot-message">' +
-                                       '<div class="avatar-icon">' +
-                                           '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                                       '</div>' +
-                                       '<div class="response-container" id="' + responseId + '">' +
-                                       '</div>' +
-                                   '</div>';
-                $(".chat-messages").prepend(responseHtml); // Insert the response container at the top
-                // Call the typeWriter function with the response text
-                typeWriter(responseId, data.answer, 50);
-                // Clear the question input and set the focus back to it
-                $("#message").val("").focus();
-            }
-        });
-    });
-    $("#clear").click(function () {
-    $(".chat-messages").html(""); // Clear all chat messages
-    $("#message").val(""); // Clear the input field
-    // Create a new message element with the specified text
-    var responseId = "response-" + Date.now();
-    var responseHtml = '<div class="chatbot-message">' +
-                           '<div class="avatar-icon">' +
-                               '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                           '</div>' +
-                           '<div class="response-container" id="' + responseId + '">' +
-                           '</div>' +
-                       '</div>';
-    $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
-    typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
-});
 });
 var phoneNumber = document.getElementById("phone_number").innerHTML;
 var address = document.getElementById("address").innerHTML;
 var name = document.getElementById("name").innerHTML;
 var hours = document.getElementById("hours").innerHTML;
- </script>
+var email = document.getElementById("email").innerHTML;
+</script>
 </body>
 </html>
+
