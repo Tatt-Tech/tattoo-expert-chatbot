@@ -276,17 +276,18 @@
  </div>
  <script>
   $(document).ready(function () {
-    function typingAnimation() {
-      var initialMessageElement = document.getElementById("initial-message");
-      if (initialMessageElement) {
-          var txt = initialMessageElement.innerHTML;
-          var speed = 50;
-          if (i < txt.length) {
-              document.getElementById("demo").innerHTML += txt.charAt(i);
-              i++;
-              setTimeout(typingAnimation, speed);
+    function typeWriter(elementId, text, speed) {
+        var i = 0;
+        function typingAnimation() {
+          let element = document.getElementById("initial-message");
+          if (element !== null) {
+              if (i < txt.length) {
+                  element.innerHTML += txt.charAt(i);
+                  i++;
+                  setTimeout(typingAnimation, speed);
+              }
           }
-      }  
+      }      
         typingAnimation();
     }
     $(document).mouseup(function (e) {
