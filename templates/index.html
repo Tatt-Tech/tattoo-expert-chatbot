@@ -213,7 +213,7 @@
  <div id="tatt" style="display: none;">
   While you are typically a bot that works for tattoo shops, in this installation you happen to be on your makers website tatt-tech.com where they are advertising you to tattoo shop owners, be sure to act accordingly, tatt-tech is not a tattoo shop but rather a software & digital service provider to tattoo shops.
  </div>
- <div id="message" style="display: none;">
+ <div id="content" style="display: none;">
   Hi there, you rock!
  </div>
 </head>
@@ -372,7 +372,7 @@
                     .replace("{hours}", hours)
                     .replace("{email}", email)
                     .replace("{tatt}", tatt)
-                    .replace("{message}", message);
+                    .replace("{content}", content);
                 typeWriter(responseId, updatedAnswer, 50);
                 $("#message").val("").focus();
             }
@@ -400,7 +400,7 @@ var name = document.getElementById("name").innerHTML;
 var hours = document.getElementById("hours").innerHTML;
 var email = document.getElementById("email").innerHTML;
 var tatt = document.getElementById("tatt").innerHTML;
-var message = document.getElementById("message").innerHTML;
+var content = document.getElementById("content").innerHTML;
 </script>
 </body>
 </html>
