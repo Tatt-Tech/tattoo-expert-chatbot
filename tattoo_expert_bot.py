@@ -18,7 +18,7 @@ def answer_question(question, phone_number, address, name, hours, email, tatt):
         ]
     )
 
-    phone_number_link = f"<a href='tel:{phone_number}'>{phone_number}</a>"
-    tatt_link = f"<a href='{tatt}'>{tatt}</a>"
+    phone_number_link = f"<a href='tel:{phone_number}' style='text-decoration: underline;'>{phone_number}</a>"
+    tatt_link = f"<a href='{tatt}' style='text-decoration: underline;'>Click Here to Schedule</a>"
 
     return response.choices[0].message.content.replace(phone_number_placeholder, phone_number_link).replace(tatt_placeholder, tatt_link)
