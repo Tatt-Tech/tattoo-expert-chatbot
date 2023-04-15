@@ -17,6 +17,7 @@
             right: 20px;
             margin-left: 20px;
             max-width: 350px;
+            min-width: 325px;
             display: none;
             border-radius: 20px;
             z-index: 100;
@@ -63,6 +64,7 @@
           position: absolute; 
           top: 10px; 
           left: 10px; 
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
       }  
       .avatar-icon img {
           width: 24px;
@@ -121,9 +123,13 @@
           text-align: center; 
           margin-top: 15px;
           font-size: 12px;
+          display: flex !important;
+          align-content: center !important;
+          justify-content: center !important;
          } 
          .logo {
           width: 50px;
+          vertical-align: center !important;
         }
         .open_logo {
           width: 50px;
@@ -148,11 +154,45 @@
 .close-button:hover {
   color: #555;
 }
+.popup-close-button {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+}
 .response-container {
     background-color: white;
     padding: 20px 25px;
     border-radius: 50px;
     margin-bottom: 15px;
+}
+.popup {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 99;
+  max-width: 375px;
+}
+.popup p{
+    font-size: 14px !important;   
+}
+.popup-content {
+  display: flex;
+  align-items: center;
+  padding: 25px;
+}
+.popup-text {
+  background-color: white;
+  padding: 20px 35px;
+  border-radius: 50px;
+  margin-left: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
  </style>
  <div id="phone_number" style="display: none;">
@@ -172,6 +212,20 @@
  </div>
 </head>
 <body>
+ <div class="popup">
+  <span id="popup-close-button" class="popup-close-button">
+   ×
+  </span>
+  <div class="avatar-icon">
+   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">
+  </div>
+  <div class="popup-content">
+   <div class="chatbot-message">
+    <div class="popup-text" id="popup-text">
+    </div>
+   </div>
+  </div>
+ </div>
  <div class="tattoo-icon">
   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
  </div>
@@ -231,6 +285,15 @@
         }
         typingAnimation();
     }
+    $(document).mouseup(function (e) {
+        var container = $(".popup");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.fadeOut();
+        }
+    });
+    function scrollToTop() {
+        $(".chat-messages").animate({ scrollTop: 0 }, "slow");
+    }
     $(".tattoo-icon").click(function () {
         if ($("#initial-message-text").text() === "") {
             typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
@@ -251,6 +314,17 @@
     $(".chat-content").click(function () {
         event.stopPropagation();
     });
+    setTimeout(function () {
+        typeWriter("popup-text", "Hey, I'm Aurora! I could handle all your customer questions 😊 Our first 100 clients get me for free! Give me a try below 💬", 50);
+        $(".popup").fadeIn(1000);
+    }, 2500);
+    $("#popup-close-button").click(function () {
+        $(".popup").fadeOut(1);
+    });
+    $(".tattoo-icon").click(function () {
+        $(".popup").fadeOut(1);
+        // The rest of the click event code remains unchanged
+    });
     $("#send").click(function () {
         var message = $("#message").val();
         if (message.trim() === "") {
@@ -267,6 +341,7 @@
                               '</div>' +
                           '</div>';
         $(".chat-messages").prepend(loadingHtml);
+        scrollToTop();
         $.ajax({
             url: "https://tattoo-expert.herokuapp.com/api/chat",
             type: "POST",
@@ -282,14 +357,15 @@
                                        '<div class="response-container" id="' + responseId + '">' +
                                        '</div>' +
                                    '</div>';
-                $(".chat-messages").prepend(responseHtml);
+                               $(".chat-messages").prepend(responseHtml);
+                scrollToTop();
                 var updatedAnswer = data.answer
-    .replace("{phone_number}", phoneNumber)
-    .replace("{address}", address)
-    .replace("{name}", name)
-    .replace("{hours}", hours)
-    .replace("{email}", email);
-typeWriter(responseId, updatedAnswer, 50);
+                    .replace("{phone_number}", phoneNumber)
+                    .replace("{address}", address)
+                    .replace("{name}", name)
+                    .replace("{hours}", hours)
+                    .replace("{email}", email);
+                typeWriter(responseId, updatedAnswer, 50);
                 $("#message").val("").focus();
             }
         });
@@ -305,8 +381,9 @@ typeWriter(responseId, updatedAnswer, 50);
                                '<div class="response-container" id="' + responseId + '">' +
                                '</div>' +
                            '</div>';
-        $(".chat-messages").prepend(responseHtml);
-        typeWriter(responseId, "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+        $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
+        scrollToTop(); // Scroll to the top after adding the new message
+        typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
     });
 });
 var phoneNumber = document.getElementById("phone_number").innerHTML;
