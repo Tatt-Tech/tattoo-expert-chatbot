@@ -272,8 +272,8 @@
      </a>
     </p>
    </div>
-   <p style="font-size: 10px; font-weight: 100;">Version 1.0 Beta</p>
   </div>
+  <p style="font-size: 10px; font-weight: 100; text-align: center;">Version 1.0 Beta</p>
  </div>
  <script>
   $(document).ready(function () {
@@ -297,25 +297,44 @@
     function scrollToTop() {
         $(".chat-messages").animate({ scrollTop: 0 }, "slow");
     }
+
+    function displayHelpMessage() {
+        var responseId = "response-" + Date.now();
+        var responseHtml = '<div class="chatbot-message">' +
+                               '<div class="avatar-icon">' +
+                                   '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                               '</div>' +
+                               '<div class="response-container" id="' + responseId + '">' +
+                               '</div>' +
+                           '</div>';
+        $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
+        scrollToTop(); // Scroll to the top after adding the new message
+        typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
+    }
+
+    function displayInitialMessage() {
+        if ($("#initial-message-text").length === 0) {
+            var initialMessageHtml = '<div class="chatbot-message" id="initial-message">' +
+                                         '<div id="initial-message-text">' +
+                                         '</div>' +
+                                     '</div>';
+            $(".chat-messages").prepend(initialMessageHtml);
+        }
+        if ($("#initial-message-text").text() === "") {
+            typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+        }
+    }
+
     $(".tattoo-icon").click(function () {
-      if ($("#initial-message-text").length === 0) {
-          var initialMessageHtml = '<div class="chatbot-message" id="initial-message">' +
-                                       '<div id="initial-message-text">' +
-                                       '</div>' +
-                                   '</div>';
-          $(".chat-messages").prepend(initialMessageHtml);
-      }
-      if ($("#initial-message-text").text() === "") {
-          typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
-      }
+      displayInitialMessage();
       $(".chat-widget").toggle();
       $(".tattoo-icon").toggle();
-  });
+    });
   
-  $("#close-button").click(function () {
-      $(".chat-widget").toggle();
-      $(".tattoo-icon").toggle();
-  });  
+    $("#close-button").click(function () {
+        $(".chat-widget").toggle();
+        $(".tattoo-icon").toggle();
+    });  
     $(document).click(function (event) {
         if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
             $(".chat-widget").hide();
@@ -334,7 +353,6 @@
     });
     $(".tattoo-icon").click(function () {
         $(".popup").fadeOut(1);
-        // The rest of the click event code remains unchanged
     });
     $("#send").click(function () {
         var message = $("#message").val();
@@ -383,19 +401,9 @@
         });
     });
     $("#clear").click(function () {
-      $(".chat-messages").html("");
-      $("#message").val("");
-        var responseId = "response-" + Date.now();
-        var responseHtml = '<div class="chatbot-message">' +
-                               '<div class="avatar-icon">' +
-                                   '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                               '</div>' +
-                               '<div class="response-container" id="' + responseId + '">' +
-                               '</div>' +
-                           '</div>';
-        $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
-        scrollToTop(); // Scroll to the top after adding the new message
-        typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
+        $(".chat-messages").html("");
+        $("#message").val("");
+        displayHelpMessage();
     });
 });
 var phoneNumber = document.getElementById("phone_number").innerHTML;
