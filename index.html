@@ -374,7 +374,7 @@
         });
     });
     $("#clear").click(function () {
-      $(".chat-messages").children().not("#initial-message").remove();
+      $(".chat-messages").children().remove();
       $("#initial-message").show();
       $("#message").val("");
         var responseId = "response-" + Date.now();
