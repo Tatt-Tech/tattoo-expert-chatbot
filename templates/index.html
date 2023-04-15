@@ -249,9 +249,7 @@
       </div>
      </div>
     </div>
-    <div id="content" style="display: none;">
     <div id="chatbot-answer">
-    </div>
     </div>
    </div>
    <textarea id="message" class="form-control" rows="1" style="resize: none; height: auto; margin-top: 25px;" placeholder="Ask a question...">   </textarea>
@@ -370,8 +368,7 @@
                     .replace("{name}", name)
                     .replace("{hours}", hours)
                     .replace("{email}", email)
-                    .replace("{tatt}", tatt)
-                    .replace("{content}", content);
+                    .replace("{tatt}", tatt);
                 typeWriter(responseId, updatedAnswer, 50);
                 $("#message").val("").focus();
             }
@@ -399,7 +396,6 @@ var name = document.getElementById("name").innerHTML;
 var hours = document.getElementById("hours").innerHTML;
 var email = document.getElementById("email").innerHTML;
 var tatt = document.getElementById("tatt").innerHTML;
-var content = document.getElementById("content").innerHTML;
 </script>
 </body>
 </html>
