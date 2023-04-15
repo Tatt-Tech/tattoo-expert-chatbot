@@ -297,16 +297,24 @@
         $(".chat-messages").animate({ scrollTop: 0 }, "slow");
     }
     $(".tattoo-icon").click(function () {
-        if ($("#initial-message-text").text() === "") {
-            typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
-        }
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });
-    $("#close-button").click(function () {
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });
+      if ($("#initial-message-text").length === 0) {
+          var initialMessageHtml = '<div class="chatbot-message" id="initial-message">' +
+                                       '<div id="initial-message-text">' +
+                                       '</div>' +
+                                   '</div>';
+          $(".chat-messages").prepend(initialMessageHtml);
+      }
+      if ($("#initial-message-text").text() === "") {
+          typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert!\n\nIs there anything I can help with? 😊", 50);
+      }
+      $(".chat-widget").toggle();
+      $(".tattoo-icon").toggle();
+  });
+  
+  $("#close-button").click(function () {
+      $(".chat-widget").toggle();
+      $(".tattoo-icon").toggle();
+  });  
     $(document).click(function (event) {
         if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
             $(".chat-widget").hide();
