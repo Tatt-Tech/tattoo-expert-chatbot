@@ -374,8 +374,9 @@
         });
     });
     $("#clear").click(function () {
-        $(".chat-messages").html("");
-        $("#message").val("");
+      $(".chat-messages").html("");
+      $("#message").val("");
+      $("#initial-message").hide();
         var responseId = "response-" + Date.now();
         var responseHtml = '<div class="chatbot-message">' +
                                '<div class="avatar-icon">' +
