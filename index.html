@@ -326,16 +326,19 @@
         }
     }
 
-    $(".tattoo-icon").click(function () {
+    $("#close-button").click(function () {
+      $(".chat-messages").html(""); // Clear chat messages when closing the chat widget
+      $(".chat-widget").toggle();
+      $(".tattoo-icon").toggle();
+  });
+  
+  $(".tattoo-icon").click(function () {
       displayInitialMessage();
       $(".chat-widget").toggle();
       $(".tattoo-icon").toggle();
-    });
+      $(".chat-messages").html(""); // Clear chat messages when opening the chat widget again
+  });
   
-    $("#close-button").click(function () {
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });  
     $(document).click(function (event) {
         if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
             $(".chat-widget").hide();
