@@ -279,15 +279,12 @@
     function typeWriter(elementId, text, speed) {
         var i = 0;
         function typingAnimation() {
-          let element = document.getElementById("initial-message");
-          if (element !== null) {
-              if (i < txt.length) {
-                  element.innerHTML += txt.charAt(i);
-                  i++;
-                  setTimeout(typingAnimation, speed);
-              }
-          }
-      }      
+            if (i < text.length) {
+                document.getElementById(elementId).innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typingAnimation, speed);
+            }
+        }
         typingAnimation();
     }
     $(document).mouseup(function (e) {
