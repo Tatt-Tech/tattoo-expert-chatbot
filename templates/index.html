@@ -275,6 +275,12 @@
   </div>
  </div>
  <script>
+  const messageList = document.querySelector('#message-list');
+    const clearButton = document.querySelector('#clear-button');
+
+    clearButton.addEventListener('click', () => {
+      messageList.innerHTML = '';
+    });
   $(document).ready(function () {
     function typeWriter(elementId, text, speed) {
         var i = 0;
@@ -374,7 +380,7 @@
         });
     });
     $("#clear").click(function () {
-      $(".chat-messages").children().remove();
+      $(".chat-messages").children().not("#initial-message").remove();
       $("#initial-message").show();
       $("#message").val("");
         var responseId = "response-" + Date.now();
