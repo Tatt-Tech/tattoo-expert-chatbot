@@ -275,12 +275,6 @@
   </div>
  </div>
  <script>
-  const messageList = document.querySelector('#message-list');
-    const clearButton = document.querySelector('#clear-button');
-
-    clearButton.addEventListener('click', () => {
-      messageList.innerHTML = '';
-    });
   $(document).ready(function () {
     function typeWriter(elementId, text, speed) {
         var i = 0;
@@ -380,21 +374,29 @@
         });
     });
     $("#clear").click(function () {
-      $(".chat-messages").children().not("#initial-message").remove();
-      $("#initial-message").show();
+      $(".chat-messages").html("");
       $("#message").val("");
-        var responseId = "response-" + Date.now();
-        var responseHtml = '<div class="chatbot-message">' +
-                               '<div class="avatar-icon">' +
-                                   '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                               '</div>' +
-                               '<div class="response-container" id="' + responseId + '">' +
+      var responseId = "response-" + Date.now();
+      var responseHtml = '<div class="chatbot-message">' +
+                             '<div class="avatar-icon">' +
+                                 '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                             '</div>' +
+                             '<div class="response-container" id="' + responseId + '">' +
+                             '</div>' +
+                         '</div>';
+      $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
+      scrollToTop(); // Scroll to the top after adding the new message
+      typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
+  
+      // Add the initial-message back to the chat-messages container
+      var initialMessage = '<div class="chatbot-message" id="initial-message">' +
+                               '<div>' +
+                                   '<div id="initial-message-text">' +
+                                   '</div>' +
                                '</div>' +
                            '</div>';
-        $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
-        scrollToTop(); // Scroll to the top after adding the new message
-        typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
-    });
+      $(".chat-messages").append(initialMessage);
+  });  
 });
 var phoneNumber = document.getElementById("phone_number").innerHTML;
 var address = document.getElementById("address").innerHTML;
