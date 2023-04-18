@@ -379,27 +379,22 @@
             contentType: "application/json",
             data: JSON.stringify({ "message": message }),
             success: function (data) {
-                $("#" + loadingId).remove();
-                var responseId = "response-" + Date.now();
-                var responseHtml = '<div class="chatbot-message">' +
-                                       '<div class="avatar-icon">' +
-                                           '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                                       '</div>' +
-                                       '<div class="response-container" id="' + responseId + '">' +
-                                       '</div>' +
-                                   '</div>';
-                               $(".chat-messages").prepend(responseHtml);
-                scrollToTop();
-                var updatedAnswer = data.answer
-                    .replace("{phone_number}", phoneNumber)
-                    .replace("{address}", address)
-                    .replace("{name}", name)
-                    .replace("{hours}", hours)
-                    .replace("{email}", email)
-                    .replace("{tatt}", tatt);
-                typeWriter(responseId, updatedAnswer, 50);
-                $("#message").val("").focus();
-            }
+              $("#" + loadingId).remove();
+              var responseId = "response-" + Date.now();
+              var responseHtml = '<div class="chatbot-message">' +
+                                     '<div class="avatar-icon">' +
+                                         '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                     '</div>' +
+                                     '<div class="response-container" id="' + responseId + '">' +
+                                     '</div>' +
+                                 '</div>';
+              $(".chat-messages").prepend(responseHtml);
+              scrollToTop();
+              var updatedAnswer = replaceCustomTags(data.answer); // Use the new function to replace custom tags
+              typeWriter(responseId, updatedAnswer, 50);
+              $("#message").val("");
+              displayHelpMessage();
+          },          
         });
     });
     $("#clear").click(function () {
@@ -408,6 +403,17 @@
         displayHelpMessage();
     });
 });
+function replaceCustomTags(responseText) {
+  responseText = responseText.replace(/<phone>/g, '<a href="tel:' + $('#phone_number').text().trim() + '">');
+  responseText = responseText.replace(/<\/phone>/g, '</a>');
+  responseText = responseText.replace(/<email>/g, '<a href="mailto:' + $('#email').text().trim() + '">');
+  responseText = responseText.replace(/<\/email>/g, '</a>');
+  responseText = responseText.replace(/<schedule>/g, '<a href="' + $('#tatt').text().trim() + '" target="_blank">');
+  responseText = responseText.replace(/<\/schedule>/g, '</a>');
+  responseText = responseText.replace(/<address>/g, '<a href="https://www.google.com/maps?q=' + encodeURIComponent($('#address').text().trim()) + '" target="_blank">');
+  responseText = responseText.replace(/<\/address>/g, '</a>');
+  return responseText;
+}
 var phoneNumber = document.getElementById("phone_number").innerHTML;
 var address = document.getElementById("address").innerHTML;
 var name = document.getElementById("name").innerHTML;

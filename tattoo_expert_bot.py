@@ -16,6 +16,6 @@ def answer_question(question):
     )
 
     message_content = response.choices[0].message.content
-    formatted_message = message_content.replace("{phone_number}", f'<a href="tel:{phone_number}" style="text-decoration: underline;">{phone_number}</a>').replace("{tatt}", f'<a href="{tatt}" style="text-decoration: underline;">Click Here To Book</a>')
+    formatted_message = message_content.replace("{phone_number}", f'[[tel:{phone_number}]]{phone_number}[[/tel]]').replace("{tatt}", f'[[href:{tatt}]]Click Here To Book[[/href]]')
 
     return formatted_message
