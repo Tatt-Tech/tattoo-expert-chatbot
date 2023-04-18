@@ -4,9 +4,6 @@ import os
 def answer_question(question):
     openai.api_key = os.environ["openai_api_key"]
 
-    phone_number = "{phone_number}"
-    tatt = "{tatt}"
-
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -15,7 +12,4 @@ def answer_question(question):
         ]
     )
 
-    message_content = response.choices[0].message.content
-    formatted_message = message_content.replace("{phone_number}", f'[[tel:{phone_number}]]{phone_number}[[/tel]]').replace("{tatt}", f'[[href:{tatt}]]Click Here To Book[[/href]]')
-
-    return formatted_message
+    return response.choices[0].message.content
