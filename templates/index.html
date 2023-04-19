@@ -279,6 +279,7 @@
  </div>
  <script>
   $(document).ready(function () {
+    var initialMessageDisplayed = false;
     function typeWriter(elementId, text, speed) {
         var i = 0;
         function typingAnimation() {
@@ -328,10 +329,13 @@
     }
 
     $(".tattoo-icon").click(function () {
-      displayInitialMessage();
+      if (!initialMessageDisplayed) { // Add this line to check if the initial message has been displayed
+          displayInitialMessage();
+          initialMessageDisplayed = true; // Set the flag to true after the initial message has been displayed
+      }
       $(".chat-widget").toggle();
       $(".tattoo-icon").toggle();
-    });
+  });
   
     $("#close-button").click(function () {
         $(".chat-widget").toggle();
