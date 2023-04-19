@@ -197,7 +197,7 @@
 }
  </style>
  <div id="phone_number" style="display: none;">
-  <a href="tel:+1 (208) 732-2671">+1 (208) 732-2671</a>
+  +1 (208) 732-2671
  </div>
  <div id="address" style="display: none;">
   Twin Falls, ID USA
@@ -213,6 +213,9 @@
  </div>
  <div id="booking" style="display: none;">
   https://koalendar.com/e/schedule-a-call-tatt-tech
+ </div>
+ <div id="address_link" style="display: none;">
+  https://goo.gl/maps/xSbf4UPEXe4NKqYu6
  </div>
 </head>
 <body>
@@ -400,7 +403,8 @@
                     .replace("{name}", name)
                     .replace("{hours}", hours)
                     .replace("{email}", email)
-                    .replace("{booking}", booking);
+                    .replace("{booking}", booking)
+                    .replace("{address_link}", address_link);
                 typeWriter(responseId, updatedAnswer, 50);
                 $("#message").val("").focus();
             }
@@ -418,6 +422,7 @@ var name = document.getElementById("name").innerHTML;
 var hours = document.getElementById("hours").innerHTML;
 var email = document.getElementById("email").innerHTML;
 var booking = document.getElementById("booking").innerHTML;
+var address_link = document.getElementById("address_link").innerHTML;
 </script>
 </body>
 </html>
