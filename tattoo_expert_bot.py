@@ -29,7 +29,7 @@ def ask():
     question = request.form.get('question')
     response = answer_question(question)
     safe_response = Markup(response)
-    return render_template('your_template.html', response=safe_response)
+    return render_template('index.html', response=safe_response)
 
 if __name__ == '__main__':
     app.run()
