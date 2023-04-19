@@ -1,9 +1,10 @@
 import openai
 import os
+from flask import Flask, render_template_string, request
 
 booking = "<a href='{booking}' target='_blank'>Click Here to Book</a>"
 email = "<a href= 'mailto: {email}' target='_blank'>{email}</a>"
-phone_number = "<a href='tel: {phone_number}' target='_blank'>{phone_number}</a>"
+phone_number = "<a href= 'tel: {phone_number}' target='_blank'>{phone_number}</a>"
 address = "<a href='{address_link}' target='_blank'>{address}</a>"
 name = "{name}"
 hours = "{hours}"
@@ -20,3 +21,14 @@ def answer_question(question):
     )
 
     return response.choices[0].message.content
+
+app = Flask(__name__)
+
+@app.route('/ask', methods=['POST'])
+def ask():
+    question = request.form.get('question')
+    response = answer_question(question)
+    return render_template_string('<p>{{ response|safe }}</p>', response=response)
+
+if __name__ == '__main__':
+    app.run()
