@@ -1,6 +1,6 @@
 import openai
 import os
-from flask import Flask, render_template_string, request
+from flask import Flask, request, render_template, Markup
 
 booking = "<a href='{booking}' target='_blank'>Click Here to Book</a>"
 email = "<a href= 'mailto: {email}' target='_blank'>{email}</a>"
@@ -11,7 +11,7 @@ hours = "{hours}"
 
 def answer_question(question):
     openai.api_key = os.environ["openai_api_key"]
-        
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -28,7 +28,8 @@ app = Flask(__name__)
 def ask():
     question = request.form.get('question')
     response = answer_question(question)
-    return render_template_string('<p>{{ response|safe }}</p>', response=response)
+    safe_response = Markup(response)
+    return render_template('your_template.html', response=safe_response)
 
 if __name__ == '__main__':
     app.run()
