@@ -284,27 +284,37 @@
     function typeWriter(elementId, text, speed) {
       var i = 0;
       var container = document.getElementById(elementId);
+      var tempElement = document.createElement('div');
+      tempElement.innerHTML = text;
+      
       function typingAnimation() {
-          if (i < text.length) {
-              var currentChar = text.charAt(i);
-              if (currentChar === '<') {
-                  var tag = '';
-                  while (text.charAt(i) !== '>') {
-                      tag += text.charAt(i);
-                      i++;
+          if (i < tempElement.childNodes.length) {
+              var currentNode = tempElement.childNodes[i].cloneNode(true);
+  
+              if (currentNode.nodeType === Node.TEXT_NODE) {
+                  var j = 0;
+                  var textContent = currentNode.textContent;
+  
+                  function typeTextContent() {
+                      if (j < textContent.length) {
+                          container.innerHTML += textContent.charAt(j);
+                          j++;
+                          setTimeout(typeTextContent, speed);
+                      } else {
+                          i++;
+                          typingAnimation();
+                      }
                   }
-                  tag += '>';
-                  i++;
-                  container.innerHTML += tag;
+                  typeTextContent();
               } else {
-                  container.innerHTML += currentChar;
+                  container.appendChild(currentNode);
                   i++;
+                  setTimeout(typingAnimation, speed);
               }
-              setTimeout(typingAnimation, speed);
           }
       }
       typingAnimation();
-  }  
+  }    
     $(document).mouseup(function (e) {
         var container = $(".popup");
         if (!container.is(e.target) && container.has(e.target).length === 0) {
