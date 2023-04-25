@@ -282,16 +282,29 @@
   $(document).ready(function () {
     var initialMessageDisplayed = false;
     function typeWriter(elementId, text, speed) {
-        var i = 0;
-        function typingAnimation() {
-            if (i < text.length) {
-                document.getElementById(elementId).innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typingAnimation, speed);
-            }
-        }
-        typingAnimation();
-    }
+      var i = 0;
+      var container = document.getElementById(elementId);
+      function typingAnimation() {
+          if (i < text.length) {
+              var currentChar = text.charAt(i);
+              if (currentChar === '<') {
+                  var tag = '';
+                  while (text.charAt(i) !== '>') {
+                      tag += text.charAt(i);
+                      i++;
+                  }
+                  tag += '>';
+                  i++;
+                  container.innerHTML += tag;
+              } else {
+                  container.innerHTML += currentChar;
+                  i++;
+              }
+              setTimeout(typingAnimation, speed);
+          }
+      }
+      typingAnimation();
+  }  
     $(document).mouseup(function (e) {
         var container = $(".popup");
         if (!container.is(e.target) && container.has(e.target).length === 0) {
