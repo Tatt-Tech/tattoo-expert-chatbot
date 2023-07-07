@@ -1,466 +1,452 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
- <title>
-  Your Personal Tattoo Expert
- </title>
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- <script src="https://code.jquery.com/jquery-3.6.0.min.js">
- </script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
- <style>
-  .chat-widget {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            margin-left: 20px;
-            max-width: 350px;
-            min-width: 325px;
-            display: none;
-            border-radius: 20px;
-            z-index: 100;
-        }
-        .chat-content {
-          background-color: #f1f1f1;
-          padding: 25px;
-          border-radius: 20px;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-      }
-      #initial-message {
-    background-color: white;
-    padding: 20px 25px;
-    border-radius: 50px;
-    display: inline-block;
-}
-        .tattoo-icon {
-            width: 75px;
-            height: 75px;
-            background-color: #38afdd;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            cursor: pointer;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            animation: pulse 1s infinite;
-        }
-        .avatar-icon {
-          width: 50px;
-          height: 50px;
-          background-color: white;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-right: 15px;
-          flex-shrink: 0;
-          position: absolute; 
-          top: 10px; 
-          left: 10px; 
-          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      }  
-      .avatar-icon img {
-          width: 24px;
-          height: 24px; 
-      }
-        .buttons-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            margin-top: 15px;
-        }
-        .chat-widget .chatbot-message {
-          display: flex;
-          align-items: center;
-        }
-        .chat-widget .chatbot-message img {
-          height: 30px;
-        }
-        .chat-widget .chatbot-message {
-          display: flex;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-        .chat-widget .chatbot-message img {
-          height: 30px;
-        }
-        .loading-dots {
-          display: inline-block;
-          width: 20px;
-          font-size: 14px;
-          line-height: 1;
-          animation: loadingDots 1s infinite;
-        }
-        @keyframes loadingDots {
-          0%, 20% {
-            color: rgba(0,0,0,0);
-            text-shadow:
-              .25em 0 0 rgba(0,0,0,0),
-              .5em 0 0 rgba(0,0,0,0);}
-          40% {
-            color: black;
-            text-shadow:
-              .25em 0 0 rgba(0,0,0,0),
-              .5em 0 0 rgba(0,0,0,0);}
-          60% {
-            text-shadow:
-              .25em 0 0 black,
-              .5em 0 0 rgba(0,0,0,0);}
-          80%, 100% {
-            text-shadow:
-              .25em 0 0 black,
-              .5em 0 0 black;}
-        }
-         .link {
-          text-align: center; 
-          margin-top: 15px;
-          font-size: 12px;
-          display: flex !important;
-          align-content: center !important;
-          justify-content: center !important;
-         } 
-         .logo {
-          width: 50px;
-          vertical-align: center !important;
-        }
-        .open_logo {
-          width: 50px;
-          margin-left: 5px;
-        }
-        .chat-messages {
-          max-height: 200px;
-          overflow-y: auto;
-          padding-right: 10px;
-          padding-left: 50px;
-          margin-bottom: 15px;
-        }
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
-  color: #888;
-}
-.close-button:hover {
-  color: #555;
-}
-.popup-close-button {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  cursor: pointer;
-  font-size: 30px;
-  font-weight: bold;
-  color: #fff;
-}
-.response-container {
-    background-color: white;
-    padding: 20px 25px;
-    border-radius: 50px;
-    margin-bottom: 15px;
-    max-width: 250px;
-}
-.popup {
-  display: none;
-  position: fixed;
-  bottom: 100px;
-  right: 20px;
-  padding: 20px;
-  border-radius: 20px;
-  z-index: 99;
-  max-width: 375px;
-}
-.popup p{
-    font-size: 14px !important;   
-}
-.popup-content {
-  display: flex;
-  align-items: center;
-  padding: 25px;
-}
-.popup-text {
-  background-color: white;
-  padding: 20px 35px;
-  border-radius: 50px;
-  margin-left: 15px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
- </style>
- <div id="phone_number" style="display: none;">
-  <a href="tel:+1 (208) 732-2671" target="_blank" style="text-decoration: underline;">+1 (208) 732-2671</a>
- </div>
- <div id="address" style="display: none;">
-  <a href="https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank" style="text-decoration: underline;">Twin Falls, ID USA</a>
- </div>
- <div id="name" style="display: none;">
-  Tatt Tech
- </div>
- <div id="hours" style="display: none;">
-  Mon-Fri: 9am - 5pm | Sat-Sun: Closed
- </div>
- <div id="email" style="display: none;">
-  <a href="mailto:info@tatt-tech.com" target="_blank" style="text-decoration: underline;">info@tatt-tech.com</a>
- </div>
- <div id="booking" style="display: none;">
-  <a href="https://koalendar.com/e/schedule-a-call-tatt-tech" target="_blank" style="text-decoration: underline;">Click Here to Book</a>
- </div>
+  <title>
+   Your Personal Tattoo Expert
+  </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js">
+  </script>
+  <style>
+   .chat-widget {
+             position: fixed;
+             bottom: 20px;
+             right: 20px;
+             margin-left: 20px;
+             max-width: 350px;
+             min-width: 325px;
+             display: none;
+             border-radius: 20px;
+             z-index: 100;
+         }
+         .chat-content {
+           background-color: #f1f1f1;
+           padding: 25px;
+           border-radius: 20px;
+           display: flex;
+           flex-direction: column;
+           position: relative;
+       }
+       #initial-message {
+     background-color: white;
+     padding: 20px 25px;
+     border-radius: 50px;
+     display: inline-block;
+ }
+         .tattoo-icon {
+             width: 75px;
+             height: 75px;
+             background-color: #38afdd;
+             position: fixed;
+             bottom: 20px;
+             right: 20px;
+             cursor: pointer;
+             border-radius: 50%;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             z-index: 100;
+             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+             animation: pulse 1s infinite;
+         }
+         .avatar-icon {
+           width: 50px;
+           height: 50px;
+           background-color: white;
+           border-radius: 50%;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           margin-right: 15px;
+           flex-shrink: 0;
+           position: absolute; 
+           top: 10px; 
+           left: 10px; 
+           box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+       }  
+       .avatar-icon img {
+           width: 24px;
+           height: 24px; 
+       }
+         .buttons-container {
+             display: flex;
+             justify-content: center;
+             gap: 10px;
+             margin-bottom: 15px;
+             margin-top: 15px;
+         }
+         .chat-widget .chatbot-message {
+           display: flex;
+           align-items: center;
+         }
+         .chat-widget .chatbot-message img {
+           height: 30px;
+         }
+         .chat-widget .chatbot-message {
+           display: flex;
+           align-items: center;
+           margin-bottom: 20px;
+         }
+         .chat-widget .chatbot-message img {
+           height: 30px;
+         }
+         .loading-dots {
+           display: inline-block;
+           width: 20px;
+           font-size: 14px;
+           line-height: 1;
+           animation: loadingDots 1s infinite;
+         }
+         @keyframes loadingDots {
+           0%, 20% {
+             color: rgba(0,0,0,0);
+             text-shadow:
+               .25em 0 0 rgba(0,0,0,0),
+               .5em 0 0 rgba(0,0,0,0);}
+           40% {
+             color: black;
+             text-shadow:
+               .25em 0 0 rgba(0,0,0,0),
+               .5em 0 0 rgba(0,0,0,0);}
+           60% {
+             text-shadow:
+               .25em 0 0 black,
+               .5em 0 0 rgba(0,0,0,0);}
+           80%, 100% {
+             text-shadow:
+               .25em 0 0 black,
+               .5em 0 0 black;}
+         }
+          .link {
+           text-align: center; 
+           margin-top: 15px;
+           font-size: 12px;
+           display: flex !important;
+           align-content: center !important;
+           justify-content: center !important;
+          } 
+          .logo {
+           width: 50px;
+           vertical-align: center !important;
+         }
+         .open_logo {
+           width: 50px;
+           margin-left: 5px;
+         }
+         .chat-messages {
+           max-height: 200px;
+           overflow-y: auto;
+           padding-right: 10px;
+           padding-left: 50px;
+           margin-bottom: 15px;
+         }
+ .close-button {
+   position: absolute;
+   top: 10px;
+   right: 20px;
+   cursor: pointer;
+   font-size: 20px;
+   font-weight: bold;
+   color: #888;
+ }
+ .close-button:hover {
+   color: #555;
+ }
+ .popup-close-button {
+   position: absolute;
+   top: 20px;
+   right: 30px;
+   cursor: pointer;
+   font-size: 30px;
+   font-weight: bold;
+   color: #fff;
+ }
+ .response-container {
+     background-color: white;
+     padding: 20px 25px;
+     border-radius: 50px;
+     margin-bottom: 15px;
+     max-width: 250px;
+ }
+ .popup {
+   display: none;
+   position: fixed;
+   bottom: 100px;
+   right: 20px;
+   padding: 20px;
+   border-radius: 20px;
+   z-index: 99;
+   max-width: 375px;
+ }
+ .popup p{
+     font-size: 14px !important;   
+ }
+ .popup-content {
+   display: flex;
+   align-items: center;
+   padding: 25px;
+ }
+ .popup-text {
+   background-color: white;
+   padding: 20px 35px;
+   border-radius: 50px;
+   margin-left: 15px;
+   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+ }
+  </style>
+  <div id="prompt" style="display: none;">
+   Your name is Aurora. You are a helpful tattoo &amp; piercing expert assistant who's goal is to assist potential or existing clients and if they haven't gotten a tattoo yet your objective is to persuade them to book a consultation. You are informative, but concise. You work for the tattoo shop and are a digital agent installed on their website to help clients. You don't suggest other artists from other shops. You cannot take payments yet but we are working on adding these abilities which will be available soon along with many more. You can provide a link to schedule a appointment or make a tattoo inquiry and in the future you'll be able to handle all bookings within the chat window. When asked if you speak another language you will continue to speak in the requested language until the conversation is cleared or you are requested to change languages. You are professional, but lighthearted and have a bit of charisma. If someone asks a question not related to tattoos or piercings, try to be helpful, but redirect the conversation back to tattoos or piercings. You are able to review the website you're installed on and get information like the phone number or address. Never output variable placeholders. Only output variable values. If a variable doesn't have a value ignore it. Here is the contact info of the business:
+   <a href="tel:+1 (208) 732-2671" target="_blank" style="text-decoration: underline;">
+    +1 (208) 732-2671
+   </a>
+   . Here is the address of the business:
+   <a href="https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank" style="text-decoration: underline;">
+    Twin Falls, ID USA
+   </a>
+   . Here is the name of the business, use it when referring to the business rather then saying the tattoo shop:
+   <div id="name" style="display: none;">
+    Tatt Tech
+   </div>
+   . Here are the hours of the business: Mon-Fri: 9am - 5pm | Sat-Sun: Closed. Here is the email of the business:
+   <a href="mailto:info@tatt-tech.com" target="_blank" style="text-decoration: underline;">
+    info@tatt-tech.com
+   </a>
+   . Here is a booking link so that clients can book calls with the business:
+   <a href="https://koalendar.com/e/schedule-a-call-tatt-tech" target="_blank" style="text-decoration: underline;">
+    Click Here to Book
+   </a>
+   . You were created by Tatt Tech &amp; Open AI and are built on top of GPT, using the latest, most up to date version available. Tatt Tech is a software &amp; digital services provider for tattoo shops. You will soon be apart of a larger ecosystem of tools for tattoo shops in the near future.
+  </div>
 </head>
 <body>
- <div class="popup">
-  <span id="popup-close-button" class="popup-close-button">
-   ×
-  </span>
-  <div class="avatar-icon">
-   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">
-  </div>
-  <div class="popup-content">
-   <div class="chatbot-message">
-    <div class="popup-text" id="popup-text">
-    </div>
-   </div>
-  </div>
- </div>
- <div class="tattoo-icon">
-  <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
- </div>
- <div class="chat-widget">
-  <div class="chat-content">
-   <span id="close-button" class="close-button">
+  <div class="popup">
+   <span id="popup-close-button" class="popup-close-button">
     ×
    </span>
-   <div id="chatbot-avatar">
-    <div class="avatar-icon">
-     <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">
-    </div>
+   <div class="avatar-icon">
+    <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">
    </div>
-   <div class="chat-messages">
-    <div class="chatbot-message" id="initial-message">
-     <div>
-      <div id="initial-message-text">
-      </div>
+   <div class="popup-content">
+    <div class="chatbot-message">
+     <div class="popup-text" id="popup-text">
      </div>
     </div>
-    <div id="chatbot-answer">
+   </div>
+  </div>
+  <div class="tattoo-icon">
+   <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/magic-tatt-gun.svg" alt="Tattoo Gun Icon" style="width: 50px; height: 50px; padding-bottom: 5px;">
+  </div>
+  <div class="chat-widget">
+   <div class="chat-content">
+    <span id="close-button" class="close-button">
+     ×
+    </span>
+    <div id="chatbot-avatar">
+     <div class="avatar-icon">
+      <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">
+     </div>
     </div>
-   </div>
-   <textarea id="message" class="form-control" rows="1" style="resize: none; height: auto; margin-top: 25px;" placeholder="Ask a question...">   </textarea>
-   <div class="buttons-container">
-    <button id="send" class="btn btn-primary mt-2" style="background-color: #38afdd; border: none;">
-     Send
-    </button>
-    <button id="clear" class="btn btn-secondary mt-2">
-     Clear
-    </button>
-   </div>
-   <div class="link">
-    <p>
-     Powered by
-     <a href="https://www.tatt-tech.com/" target="_blank">
-      <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/tatt-tech-high-resolution-logo-color-on-transparent-background.png" alt="Tatt Tech" class="logo">
-     </a>
-     x
-     <a href="https://www.openai.com/" target="_blank">
-      <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/OpenAI_Logo.svg.png" alt="OpenAI" class="open_logo">
-     </a>
+    <div class="chat-messages">
+     <div class="chatbot-message" id="initial-message">
+      <div>
+       <div id="initial-message-text">
+       </div>
+      </div>
+     </div>
+     <div id="chatbot-answer">
+     </div>
+    </div>
+    <textarea id="message" class="form-control" rows="1" style="resize: none; height: auto; margin-top: 25px;" placeholder="Ask a question...">   </textarea>
+    <div class="buttons-container">
+     <button id="send" class="btn btn-primary mt-2" style="background-color: #38afdd; border: none;">
+      Send
+     </button>
+     <button id="clear" class="btn btn-secondary mt-2">
+      Clear
+     </button>
+    </div>
+    <div class="link">
+     <p>
+      Powered by
+      <a href="https://www.tatt-tech.com/" target="_blank">
+       <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/tatt-tech-high-resolution-logo-color-on-transparent-background.png" alt="Tatt Tech" class="logo">
+      </a>
+      x
+      <a href="https://www.openai.com/" target="_blank">
+       <img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/OpenAI_Logo.svg.png" alt="OpenAI" class="open_logo">
+      </a>
+     </p>
+    </div>
+    <p style="font-size: 10px; font-weight: 100; text-align: center;">
+     Version 1.0 Beta
     </p>
    </div>
-   <p style="font-size: 10px; font-weight: 100; text-align: center;">Version 1.0 Beta</p>
   </div>
- </div>
- <script>
-  $(document).ready(function () {
-    var initialMessageDisplayed = false;
-    function typeWriter(elementId, text, speed) {
-      var i = 0;
-      var container = document.getElementById(elementId);
-      var tempElement = document.createElement('div');
-      tempElement.innerHTML = text;
-      
-      function typingAnimation() {
-          if (i < tempElement.childNodes.length) {
-              var currentNode = tempElement.childNodes[i].cloneNode(true);
-  
-              if (currentNode.nodeType === Node.TEXT_NODE) {
-                  var j = 0;
-                  var textContent = currentNode.textContent;
-  
-                  function typeTextContent() {
-                      if (j < textContent.length) {
-                          container.innerHTML += textContent.charAt(j);
-                          j++;
-                          setTimeout(typeTextContent, speed);
-                      } else {
-                          i++;
-                          typingAnimation();
-                      }
-                  }
-                  typeTextContent();
-              } else {
-                  container.appendChild(currentNode);
-                  i++;
-                  setTimeout(typingAnimation, speed);
-              }
-          }
-      }
-      typingAnimation();
-  }    
-    $(document).mouseup(function (e) {
-        var container = $(".popup");
-        if (!container.is(e.target) && container.has(e.target).length === 0) {
-            container.fadeOut();
-        }
-    });
-    function scrollToTop() {
-        $(".chat-messages").animate({ scrollTop: 0 }, "slow");
-    }
-
-    function displayHelpMessage() {
-        var responseId = "response-" + Date.now();
-        var responseHtml = '<div class="chatbot-message">' +
+  <script>
+   $(document).ready(function () {
+     var initialMessageDisplayed = false;
+     function typeWriter(elementId, text, speed) {
+       var i = 0;
+       var container = document.getElementById(elementId);
+       var tempElement = document.createElement('div');
+       tempElement.innerHTML = text;
+       function typingAnimation() {
+           if (i < tempElement.childNodes.length) {
+               var currentNode = tempElement.childNodes[i].cloneNode(true);
+               if (currentNode.nodeType === Node.TEXT_NODE) {
+                   var j = 0;
+                   var textContent = currentNode.textContent;
+                   function typeTextContent() {
+                       if (j < textContent.length) {
+                           container.innerHTML += textContent.charAt(j);
+                           j++;
+                           setTimeout(typeTextContent, speed);
+                       } else {
+                           i++;
+                           typingAnimation();
+                       }
+                   }
+                   typeTextContent();
+               } else {
+                   container.appendChild(currentNode);
+                   i++;
+                   setTimeout(typingAnimation, speed);
+               }
+           }
+       }
+       typingAnimation();
+   }    
+     $(document).mouseup(function (e) {
+         var container = $(".popup");
+         if (!container.is(e.target) && container.has(e.target).length === 0) {
+             container.fadeOut();
+         }
+     });
+     function scrollToTop() {
+         $(".chat-messages").animate({ scrollTop: 0 }, "slow");
+     }
+     function displayHelpMessage() {
+         var responseId = "response-" + Date.now();
+         var responseHtml = '<div class="chatbot-message">' +
+                                '<div class="avatar-icon">' +
+                                    '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                '</div>' +
+                                '<div class="response-container" id="' + responseId + '">' +
+                                '</div>' +
+                            '</div>';
+         $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
+         scrollToTop(); // Scroll to the top after adding the new message
+         typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
+     }
+     function displayInitialMessage() {
+         if ($("#initial-message-text").length === 0) {
+             var initialMessageHtml = '<div class="chatbot-message" id="initial-message">' +
+                                          '<div id="initial-message-text">' +
+                                          '</div>' +
+                                      '</div>';
+             $(".chat-messages").prepend(initialMessageHtml);
+         }
+         if ($("#initial-message-text").text() === "") {
+             typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert! Is there anything I can help with? 😊", 50);
+         }
+     }
+     $(".tattoo-icon").click(function () {
+       if (!initialMessageDisplayed) { // Add this line to check if the initial message has been displayed
+           displayInitialMessage();
+           initialMessageDisplayed = true; // Set the flag to true after the initial message has been displayed
+       }
+       $(".chat-widget").toggle();
+       $(".tattoo-icon").toggle();
+   });
+     $("#close-button").click(function () {
+         $(".chat-widget").toggle();
+         $(".tattoo-icon").toggle();
+     });  
+     $(document).click(function (event) {
+         if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
+             $(".chat-widget").hide();
+             $(".tattoo-icon").show();
+         }
+     });
+     $(".chat-content").click(function () {
+         event.stopPropagation();
+     });
+     setTimeout(function () {
+         typeWriter("popup-text", "Hey, I'm Aurora! I could handle your customer questions 😊 The first month is FREE! Give me a try below 💬", 50);
+         $(".popup").fadeIn(1000);
+     }, 2500);
+     $("#popup-close-button").click(function () {
+         $(".popup").fadeOut(1);
+     });
+     $(".tattoo-icon").click(function () {
+         $(".popup").fadeOut(1);
+     });
+     $("#send").click(function () {
+         var message = $("#message").val();
+         if (message.trim() === "") {
+             return;
+         }
+         $("#initial-message").hide();
+         var loadingId = "loading-" + Date.now();
+         var loadingHtml = '<div class="chatbot-message">' +
                                '<div class="avatar-icon">' +
                                    '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
                                '</div>' +
-                               '<div class="response-container" id="' + responseId + '">' +
+                               '<div class="response-container" id="' + loadingId + '">' +
+                                   '<span class="loading-dots">...</span>' +
                                '</div>' +
                            '</div>';
-        $(".chat-messages").prepend(responseHtml); // Insert the new message container at the top
-        scrollToTop(); // Scroll to the top after adding the new message
-        typeWriter(responseId, "Anything else I can help with? 😊", 50); // Display the new message with the typing animation
-    }
-
-    function displayInitialMessage() {
-        if ($("#initial-message-text").length === 0) {
-            var initialMessageHtml = '<div class="chatbot-message" id="initial-message">' +
-                                         '<div id="initial-message-text">' +
-                                         '</div>' +
-                                     '</div>';
-            $(".chat-messages").prepend(initialMessageHtml);
-        }
-        if ($("#initial-message-text").text() === "") {
-            typeWriter("initial-message-text", "Hi, I'm Aurora, your personal tattoo expert! Is there anything I can help with? 😊", 50);
-        }
-    }
-
-    $(".tattoo-icon").click(function () {
-      if (!initialMessageDisplayed) { // Add this line to check if the initial message has been displayed
-          displayInitialMessage();
-          initialMessageDisplayed = true; // Set the flag to true after the initial message has been displayed
-      }
-      $(".chat-widget").toggle();
-      $(".tattoo-icon").toggle();
-  });
-  
-    $("#close-button").click(function () {
-        $(".chat-widget").toggle();
-        $(".tattoo-icon").toggle();
-    });  
-    $(document).click(function (event) {
-        if (!$(event.target).closest(".chat-widget, .tattoo-icon").length) {
-            $(".chat-widget").hide();
-            $(".tattoo-icon").show();
-        }
-    });
-    $(".chat-content").click(function () {
-        event.stopPropagation();
-    });
-    setTimeout(function () {
-        typeWriter("popup-text", "Hey, I'm Aurora! I could handle your customer questions 😊 Our first 100 clients get me for free! Give me a try below 💬", 50);
-        $(".popup").fadeIn(1000);
-    }, 2500);
-    $("#popup-close-button").click(function () {
-        $(".popup").fadeOut(1);
-    });
-    $(".tattoo-icon").click(function () {
-        $(".popup").fadeOut(1);
-    });
-    $("#send").click(function () {
-        var message = $("#message").val();
-        if (message.trim() === "") {
-            return;
-        }
-        $("#initial-message").hide();
-        var loadingId = "loading-" + Date.now();
-        var loadingHtml = '<div class="chatbot-message">' +
-                              '<div class="avatar-icon">' +
-                                  '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                              '</div>' +
-                              '<div class="response-container" id="' + loadingId + '">' +
-                                  '<span class="loading-dots">...</span>' +
-                              '</div>' +
-                          '</div>';
-        $(".chat-messages").prepend(loadingHtml);
-        scrollToTop();
-        $.ajax({
-            url: "https://tattoo-expert.herokuapp.com/api/chat",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ "message": message }),
-            success: function (data) {
-              $("#" + loadingId).remove();
-              var responseId = "response-" + Date.now();
-              var sanitizedResponse = DOMPurify.sanitize(data.response); // Sanitize the response
-          
-              // Parse the sanitized response and process anchor tags
-              var parser = new DOMParser();
-              var parsedResponse = parser.parseFromString(sanitizedResponse, 'text/html');
-              var anchorTags = parsedResponse.getElementsByTagName('a');
-          
-              // Convert anchor tags into actual links
-              for (var i = 0; i < anchorTags.length; i++) {
-                  var link = anchorTags[i].textContent;
-                  anchorTags[i].href = link;
-                  anchorTags[i].target = '_blank'; // Optional: Open the link in a new tab
-              }
-          
-              // Use the processed response
-              var responseHtml = '<div class="chatbot-message">' +
-                                  '<div class="avatar-icon">' +
-                                      '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
-                                  '</div>' +
-                                  '<div class="response-container" id="' + responseId + '">' +
-                                      parsedResponse.documentElement.innerHTML +
-                                  '</div>' +
-                              '</div>';
-              $(".chat-messages").prepend(responseHtml);
-              scrollToTop();
-          
-              var updatedAnswer = data.answer
-                  .replace("{phone_number}", phoneNumber)
-                  .replace("{address}", address)
-                  .replace("{name}", name)
-                  .replace("{hours}", hours)
-                  .replace("{email}", email)
-                  .replace("{booking}", booking)
-              typeWriter(responseId, updatedAnswer, 50);
-              $("#message").val("").focus();
-          }
-          
-        });
-    });
-    $("#clear").click(function () {
-        $(".chat-messages").html("");
-        $("#message").val("");
-        displayHelpMessage();
-    });
-});
-var phoneNumber = document.getElementById("phone_number").innerHTML;
-var address = document.getElementById("address").innerHTML;
-var name = document.getElementById("name").innerHTML;
-var hours = document.getElementById("hours").innerHTML;
-var email = document.getElementById("email").innerHTML;
-var booking = document.getElementById("booking").innerHTML;
-</script>
+         $(".chat-messages").prepend(loadingHtml);
+         scrollToTop();
+         $.ajax({
+             url: "https://tattoo-expert.herokuapp.com/api/chat",
+             type: "POST",
+             contentType: "application/json",
+             data: JSON.stringify({ "message": message }),
+             success: function (data) {
+               $("#" + loadingId).remove();
+               var responseId = "response-" + Date.now();
+               var sanitizedResponse = DOMPurify.sanitize(data.response); // Sanitize the response
+               // Parse the sanitized response and process anchor tags
+               var parser = new DOMParser();
+               var parsedResponse = parser.parseFromString(sanitizedResponse, 'text/html');
+               var anchorTags = parsedResponse.getElementsByTagName('a');
+               // Convert anchor tags into actual links
+               for (var i = 0; i < anchorTags.length; i++) {
+                   var link = anchorTags[i].textContent;
+                   anchorTags[i].href = link;
+                   anchorTags[i].target = '_blank'; // Optional: Open the link in a new tab
+               }
+               // Use the processed response
+               var responseHtml = '<div class="chatbot-message">' +
+                                   '<div class="avatar-icon">' +
+                                       '<img src="https://irp.cdn-website.com/dfaf08d8/dms3rep/multi/robot.svg" alt="Avatar Icon">' +
+                                   '</div>' +
+                                   '<div class="response-container" id="' + responseId + '">' +
+                                       parsedResponse.documentElement.innerHTML +
+                                   '</div>' +
+                               '</div>';
+               $(".chat-messages").prepend(responseHtml);
+               scrollToTop();
+               var updatedAnswer = data.answer
+                   .replace("{prompt}", prompt)
+               typeWriter(responseId, updatedAnswer, 50);
+               $("#message").val("").focus();
+           }
+         });
+     });
+     $("#clear").click(function () {
+         $(".chat-messages").html("");
+         $("#message").val("");
+         displayHelpMessage();
+     });
+ });
+ var prompt = document.getElementById("prompt").innerHTML;
+  </script>
 </body>
 </html>
