@@ -12,7 +12,8 @@ def index():
 @app.route("/api/chat", methods=["POST"])
 def chat():
     message = request.json["message"]
-    answer = answer_question(message)
+    prompt = request.json["prompt"]
+    answer = answer_question(message, prompt)
     return jsonify({"answer": answer})
 
 if __name__ == "__main__":
