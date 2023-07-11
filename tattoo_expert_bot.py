@@ -3,18 +3,15 @@ import os
 
 openai.api_key = os.environ["openai_api_key"]
 
-def answer_question(history, prompt):
-    messages = []
-    for message in history:
-        messages.append(openai.ChatCompletion.Message(
-            role=message["role"],
-            content=str(message["content"])  # Ensure the content is a string
-        ))
+def answer_question(history, question):
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+    for msg in history:
+        messages.append({"role": msg['role'], "content": msg['content']})
+    messages.append({"role": "user", "content": question})
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        max_tokens=150
+      model="gpt-3.5-turbo",
+      messages=messages
     )
 
     return response['choices'][0]['message']['content']
