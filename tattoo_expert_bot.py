@@ -4,9 +4,15 @@ import os
 openai.api_key = os.environ["openai_api_key"]
 
 def answer_question(history, question):
-    messages = [{'role': 'system', 'content': 'You are a helpful assistant.'}]
+    if not history:
+        messages = [{'role': 'system', 'content': 'You are a helpful assistant.'}]
+    else:
+        messages = []
+        
     for msg in history:
         messages.append(msg)
+        
+    messages.append({'role': 'user', 'content': question})
 
     response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo",
