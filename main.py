@@ -8,13 +8,15 @@ app.secret_key = 'openai_api_key'
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    # Load the question from the POST request
-    question = request.get_json()['message']
+    # Load the question and prompt from the POST request
+    data = request.get_json()
+    question = data['message']
+    prompt = data.get('prompt', '')  # The prompt is optional
 
-    # If 'history' is not in the session, initialize it
+    # If 'history' is not in the session, initialize it with the prompt
     # This happens the first time the function is called
     if 'history' not in session:
-        session['history'] = []
+        session['history'] = [{'role': 'system', 'content': prompt}] if prompt else []
 
     # Call the function to generate the answer
     answer = answer_question(session['history'], question)
