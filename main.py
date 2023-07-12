@@ -17,6 +17,9 @@ def chat():
     # This happens the first time the function is called
     if 'history' not in session:
         session['history'] = [{'role': 'system', 'content': prompt}] if prompt else []
+        print('Initializing session history')  # Debug line
+
+    print('Current session history:', session['history'])  # Debug line
 
     # Call the function to generate the answer
     answer = answer_question(session['history'], question)
