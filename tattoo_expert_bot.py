@@ -3,9 +3,9 @@ import os
 
 openai.api_key = os.environ["openai_api_key"]
 
-def answer_question(history, question):
+def answer_question(history, question, prompt):
     if not history:
-        messages = [{'role': 'system', 'content': 'You are a helpful assistant.'}]
+        messages = [{'role': 'system', 'content': prompt}]
     else:
         messages = []
         

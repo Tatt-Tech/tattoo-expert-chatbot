@@ -1,4 +1,4 @@
-from flask import Flask, request, session, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tattoo_expert_bot import answer_question
 
@@ -17,7 +17,7 @@ def chat():
     print('Current session history:', history)  # Debug line
 
     # Call the function to generate the answer
-    answer = answer_question(history, question)
+    answer = answer_question(history, question, prompt)
 
     # Add the question and answer to the history
     history.append({'role': 'user', 'content': question})
