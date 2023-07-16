@@ -13,7 +13,8 @@ def chat():
     question = data['message']
     prompt = data.get('prompt', '')  # The prompt is optional
     history = data.get('history', [])  # The history is optional
-
+    
+    print("Prompt:", prompt)  # Debug line
     print('Current session history:', history)  # Debug line
 
     # Call the function to generate the answer
