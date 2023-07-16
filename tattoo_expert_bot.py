@@ -25,9 +25,19 @@ def answer_question(history, question, prompt):
     email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
     phone_pattern = re.compile(r'\b(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b')
 
-    # Replace URLs, emails, and phone numbers with clickable links
-    answer = url_pattern.sub(r'[\g<0>](\g<0>)', answer)
-    answer = email_pattern.sub(r'[\g<0>](mailto:\g<0>)', answer)
-    answer = phone_pattern.sub(r'[\g<0>](tel:\g<0>)', answer)
+    # Replace URLs with clickable links
+    for match in re.findall(url_pattern, answer):
+        replacement = f"[Click Here]({match})"
+        answer = answer.replace(match, replacement)
+
+    # Replace emails with clickable mailto links
+    for match in re.findall(email_pattern, answer):
+        replacement = f"[Email Here]({match})"
+        answer = answer.replace(match, replacement)
+
+    # Replace phone numbers with clickable tel links
+    for match in re.findall(phone_pattern, answer):
+        replacement = f"[Call Here]({match})"
+        answer = answer.replace(match, replacement)
 
     return answer
