@@ -30,4 +30,8 @@ def answer_question(history, question, prompt):
     answer = email_pattern.sub(r'<a href="mailto:\g<0>">\g<0></a>', answer)
     answer = phone_pattern.sub(r'<a href="tel:\g<0>">\g<0></a>', answer)
 
+    # Format the business address correctly
+    address_pattern = re.compile(r'"https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank">Twin Falls, ID USA')
+    answer = address_pattern.sub(r'<a href="https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank">Twin Falls, ID USA</a>', answer)
+
     return answer
