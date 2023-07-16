@@ -30,8 +30,10 @@ def answer_question(history, question, prompt):
     answer = email_pattern.sub(r'<a href="mailto:\g<0>">\g<0></a>', answer)
     answer = phone_pattern.sub(r'<a href="tel:\g<0>">\g<0></a>', answer)
 
-    # Format the business address correctly
-    address_pattern = re.compile(r'"https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank">Twin Falls, ID USA')
-    answer = address_pattern.sub(r'<a href="https://goo.gl/maps/xSbf4UPEXe4NKqYu6" target="_blank">Twin Falls, ID USA</a>', answer)
+    # General regex pattern to find incorrectly formatted HTML anchor tags
+    incorrect_anchor_pattern = re.compile(r'"(http[s]?://[^"]+)" target="_blank">([^<]+)')
+
+    # Replace any incorrectly formatted anchor tags with correct HTML
+    answer = incorrect_anchor_pattern.sub(r'<a href="\1" target="_blank">\2</a>', answer)
 
     return answer
